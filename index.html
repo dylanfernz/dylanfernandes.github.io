@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dylan Fernandes — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg2: #0d1220;
+      --card: #111827;
+      --card-hover: #161f30;
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --gold: #f59e0b;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(59,130,246,0.15);
+      --glow: rgba(59,130,246,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(8,12,20,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 50%, rgba(59,130,246,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(245,158,11,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 720px; }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.25);
+      color: var(--accent2);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: #fff;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero-name span {
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      margin-top: 1.2rem;
+      max-width: 520px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.8rem;
+      border-radius: 0.4rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59,130,246,0.3); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3.5rem;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #fff;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 4rem; position: relative; z-index: 1; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc { color: var(--muted); max-width: 520px; margin-bottom: 3rem; font-size: 0.95rem; }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .skill-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.9rem 1.2rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .skill-chip:hover { border-color: var(--accent); background: var(--glow); }
+    .skill-chip .icon { font-size: 1rem; }
+
+    /* ── WORK / PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(59,130,246,0.4);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.1);
+    }
+
+    .card-thumb {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-thumb.euphoria { background: linear-gradient(135deg, #0f172a, #1e3a5f); }
+    .card-thumb.freelance { background: linear-gradient(135deg, #0f1a0f, #1a3a1a); }
+    .card-thumb.personal { background: linear-gradient(135deg, #1a0f1a, #3a1a2a); }
+
+    .card-thumb-label {
+      position: absolute;
+      top: 1rem; left: 1rem;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 2rem;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-body { padding: 1.5rem; }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .card-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.6; }
+
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .tag {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      background: rgba(59,130,246,0.1);
+      color: var(--accent2);
+      border: 1px solid rgba(59,130,246,0.2);
+    }
+
+    .card-link {
+      font-size: 0.82rem;
+      color: var(--accent2);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s;
+    }
+    .card-link:hover { gap: 0.6rem; }
+
+    /* ── ADD VIDEO MODAL ── */
+    .add-card {
+      background: var(--card);
+      border: 1px dashed rgba(59,130,246,0.3);
+      border-radius: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 340px;
+      gap: 0.8rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .add-card:hover { border-color: var(--accent); background: var(--glow); }
+    .add-icon { font-size: 2rem; color: var(--muted); }
+    .add-label { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── EXPERIENCE ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; max-width: 700px; }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 2rem;
+      padding-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 120px;
+      top: 8px; bottom: 0;
+      width: 1px;
+      background: var(--border);
+      transform: translateX(1.8rem);
+    }
+    .timeline-item:last-child::before { display: none; }
+
+    .tl-date { font-size: 0.78rem; color: var(--muted); padding-top: 0.2rem; text-align: right; letter-spacing: 0.05em; }
+
+    .tl-content { padding-left: 3rem; position: relative; }
+    .tl-content::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 6px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+    }
+
+    .tl-role {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+    .tl-org { font-size: 0.8rem; color: var(--accent2); margin-bottom: 0.6rem; }
+    .tl-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── CONTACT ── */
+    .contact-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 3.5rem;
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .contact-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .contact-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    .contact-email {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      color: var(--accent2);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+    .contact-email:hover { color: #fff; }
+
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 480px;
+      transform: translateY(20px);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .modal-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+    .modal input, .modal select, .modal textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.4rem;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      margin-bottom: 0.8rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--accent); }
+    .modal select option { background: var(--bg); }
+
+    .modal-actions { display: flex; gap: 0.8rem; margin-top: 0.5rem; }
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.65rem 1.4rem;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+    .btn-cancel:hover { border-color: var(--muted); color: var(--text); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 0 1.5rem; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .timeline-item { grid-template-columns: 80px 1fr; gap: 1rem; }
+      .contact-box { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">DF</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">✦ Open to full-time opportunities</div>
+    <h1 class="hero-name">Dylan<br/><span>Fernandes</span></h1>
+    <p class="hero-sub">Digital Marketer & Video Content Creator based in Mumbai. I grow audiences, tell stories through reels, and make brands feel alive online.</p>
+    <div class="hero-ctas">
+      <a href="#work" class="btn btn-primary">View My Work →</a>
+      <a href="mailto:dylan.irmun@gmail.com" class="btn btn-outline">Get in Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">3K<span>+</span></div>
+        <div class="stat-label">Followers Grown</div>
+      </div>
+      <div>
+        <div class="stat-num">30K<span>+</span></div>
+        <div class="stat-label">Video Views</div>
+      </div>
+      <div>
+        <div class="stat-num">10<span>+</span></div>
+        <div class="stat-label">Videos Edited</div>
+      </div>
+      <div>
+        <div class="stat-num">₹5K</div>
+        <div class="stat-label">Freelance Earned</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">Who I am</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-title">Creative marketer<br/>with a camera brain.</h2>
+        <p>I'm a final-year BMS student at Don Bosco College, Mumbai. I've spent the last few years building real skills — not just in classrooms, but on the ground: running Instagram accounts, editing reels at 2am before fest day, managing crowds at Coldplay, and landing my first paid content gig.</p>
+        <p>My edge is that I understand both the creative and the strategic side — I can script, shoot, edit, and also think about why a piece of content should exist and who it's for.</p>
+        <p>I'm looking for a full-time Digital Marketing role where I can grow fast and contribute from day one.</p>
+      </div>
+      <div>
+        <div class="skills-grid">
+          <div class="skill-chip"><span class="icon">📸</span> Instagram Marketing</div>
+          <div class="skill-chip"><span class="icon">🎬</span> DaVinci Resolve</div>
+          <div class="skill-chip"><span class="icon">📱</span> Short-Form Video</div>
+          <div class="skill-chip"><span class="icon">✍️</span> Content Strategy</div>
+          <div class="skill-chip"><span class="icon">📲</span> VN / IG Editor</div>
+          <div class="skill-chip"><span class="icon">🤖</span> AI-assisted ideation</div>
+          <div class="skill-chip"><span class="icon">📣</span> WhatsApp PR</div>
+          <div class="skill-chip"><span class="icon">🎯</span> Event Marketing</div>
+          <div class="skill-chip"><span class="icon">👥</span> Team Management</div>
+          <div class="skill-chip"><span class="icon">📊</span> Data Science (cert)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" style="background: var(--bg2);">
+  <div class="reveal">
+    <div class="section-label">Selected Work</div>
+    <h2 class="section-title">Things I've made.</h2>
+    <p class="section-desc">Reels, event coverage, and content created for real audiences. Click any card to add your video link.</p>
+
+    <div class="projects-grid" id="projectsGrid">
+
+      <!-- EUPHORIA -->
+      <div class="project-card" onclick="openModal('euphoria')">
+        <div class="card-thumb euphoria">
+          🎭
+          <span class="card-thumb-label">Social Media</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Euphoria College Fest</div>
+          <div class="card-desc">Led Instagram content strategy as Marketing Head — grew account to 3K+ followers with 30K+ video views through reels, promos, and WhatsApp PR campaigns.</div>
+          <div class="card-tags">
+            <span class="tag">Instagram</span>
+            <span class="tag">Reels</span>
+            <span class="tag">DaVinci</span>
+            <span class="tag">Content Strategy</span>
+          </div>
+          <span class="card-link" id="euphoria-link">+ Add your reel link →</span>
+        </div>
+      </div>
+
+      <!-- FREELANCE -->
+      <div class="project-card" onclick="openModal('freelance')">
+        <div class="card-thumb freelance">
+          🏃
+          <span class="card-thumb-label">Freelance</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">School Sports Day — Paid Gig</div>
+          <div class="card-desc">Commissioned to shoot and edit 4 reels for a school's annual sports day event. Delivered highlight reels combining phone and laptop-based editing. Paid ₹5,000.</div>
+          <div class="card-tags">
+            <span class="tag">Freelance</span>
+            <span class="tag">Video Shoot</span>
+            <span class="tag">Reel Editing</span>
+            <span class="tag">VN</span>
+          </div>
+          <span class="card-link" id="freelance-link">+ Add your reel link →</span>
+        </div>
+      </div>
+
+      <!-- PERSONAL -->
+      <div class="project-card" onclick="openModal('personal')">
+        <div class="card-thumb personal">
+          ✨
+          <span class="card-thumb-label">Personal</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Personal Content</div>
+          <div class="card-desc">Original edits and creative content showcasing my personal editing style — transitions, blending, fast-paced trailers and creative text overlays.</div>
+          <div class="card-tags">
+            <span class="tag">DaVinci</span>
+            <span class="tag">Creative Edits</span>
+            <span class="tag">Transitions</span>
+          </div>
+          <span class="card-link" id="personal-link">+ Add your reel link →</span>
+        </div>
+      </div>
+
+      <!-- ADD MORE -->
+      <div class="add-card" onclick="openModal('new')">
+        <div class="add-icon">＋</div>
+        <div class="add-label">Add another project</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal">
+    <div class="section-label">Journey</div>
+    <h2 class="section-title">Where I've been.</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-date">2024–25</div>
+        <div class="tl-content">
+          <div class="tl-role">Marketing Head — Euphoria College Fest</div>
+          <div class="tl-org">Don Bosco College, Mumbai</div>
+          <div class="tl-desc">Managed Instagram presence (3K followers, 30K+ views), created reels, led a team of 4 marketing heads, and ran WhatsApp PR campaigns for Mumbai's Euphoria college fest.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">2025</div>
+        <div class="tl-content">
+          <div class="tl-role">Head of Media Coverage</div>
+          <div class="tl-org">Don Bosco Cultural Committee</div>
+          <div class="tl-desc">Led full media coverage for cultural events — shooting, editing, and publishing content across social platforms with a volunteer team.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">2025</div>
+        <div class="tl-content">
+          <div class="tl-role">Freelance Videographer & Editor</div>
+          <div class="tl-org">School Sports Day — Paid Project</div>
+          <div class="tl-desc">Shot and edited 4 reels for a school's sports day event. First paid freelance project (₹5,000), delivering end-to-end content independently.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">2024</div>
+        <div class="tl-content">
+          <div class="tl-role">Project Executive</div>
+          <div class="tl-org">Trustwell Management Services</div>
+          <div class="tl-desc">Managed 250+ daily client calls including HNIs. Served as a communication bridge between clients, brokers, and internal teams in a high-pressure environment.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">2023–25</div>
+        <div class="tl-content">
+          <div class="tl-role">Event Volunteer</div>
+          <div class="tl-org">Coldplay · Lollapalooza · Akon · GN'R · Enrique</div>
+          <div class="tl-desc">On-ground coordination and crowd management for some of Mumbai's biggest live events. Built composure and adaptability in high-stakes environments.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background: var(--bg2);">
+  <div class="reveal">
+    <div class="contact-box">
+      <div class="contact-title">Let's work together.</div>
+      <div class="contact-sub">I'm actively looking for full-time Digital Marketing opportunities in Mumbai. If you're building something and need someone who can create, not just manage — let's talk.</div>
+      <a href="mailto:dylan.irmun@gmail.com" class="contact-email">dylan.irmun@gmail.com</a>
+      <div class="contact-links">
+        <a href="tel:8779599921" class="btn btn-outline">📞 Call Me</a>
+        <a href="mailto:dylan.irmun@gmail.com" class="btn btn-primary">Send an Email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 Dylan Fernandes · Mumbai · Built with intention.
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Add your video link</div>
+    <div class="modal-sub" id="modalSub">Paste a Google Drive, Instagram, or YouTube link to your reel.</div>
+    <input type="text" id="modalUrl" placeholder="https://drive.google.com/... or instagram.com/reel/..." />
+    <input type="text" id="modalLabel" placeholder="Label (e.g. 'Euphoria Opening Reel')" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLink()">Save Link</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ── MODAL ──
+  let currentProject = null;
+
+  function openModal(project) {
+    currentProject = project;
+    const overlay = document.getElementById('modalOverlay');
+    const title = document.getElementById('modalTitle');
+    const sub = document.getElementById('modalSub');
+
+    if (project === 'euphoria') {
+      title.textContent = 'Add Euphoria Reel Link';
+      sub.textContent = 'Paste a link to your Euphoria reel (Google Drive, Instagram, YouTube).';
+    } else if (project === 'freelance') {
+      title.textContent = 'Add Sports Day Reel Link';
+      sub.textContent = 'Paste a link to your freelance sports day reel.';
+    } else if (project === 'personal') {
+      title.textContent = 'Add Personal Content Link';
+      sub.textContent = 'Paste a link to your personal reel or edit.';
+    } else {
+      title.textContent = 'Add a New Project';
+      sub.textContent = 'Paste a link to your content and give it a label.';
+    }
+
+    document.getElementById('modalUrl').value = '';
+    document.getElementById('modalLabel').value = '';
+    overlay.classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modalOverlay')) {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+  }
+
+  function saveLink() {
+    const url = document.getElementById('modalUrl').value.trim();
+    const label = document.getElementById('modalLabel').value.trim() || 'View Reel';
+    if (!url) { alert('Please paste a link first.'); return; }
+
+    if (currentProject && currentProject !== 'new') {
+      const el = document.getElementById(`${currentProject}-link`);
+      el.textContent = `${label} →`;
+      el.href = url;
+      el.style.color = 'var(--gold)';
+    }
+
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  // ── ACTIVE NAV ──
+  window.addEventListener('scroll', () => {
+    const sections = ['home','about','work','experience','contact'];
+    const links = document.querySelectorAll('.nav-links a');
+    let current = 'home';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) current = id;
+    });
+    links.forEach(l => {
+      l.style.color = l.getAttribute('href') === `#${current}` ? 'var(--accent2)' : '';
+    });
+  });
+</script>
+
+</body>
+</html>
